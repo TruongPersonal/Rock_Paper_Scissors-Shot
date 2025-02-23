@@ -1,6 +1,5 @@
 import random
 import time
-import os
 import pyfiglet
 from colorama import Fore, Style, init
 
