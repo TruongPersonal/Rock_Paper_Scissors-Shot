@@ -5,7 +5,6 @@ Welcome to the Rock Paper Scissors Shot Game! This is a fun and interactive game
 1. **Rock**: Beats Scissors, but loses to Paper.
 2. **Paper**: Beats Rock, but loses to Scissors.
 3. **Scissors**: Beats Paper, but loses to Rock.
-4. **Shot**: A special move that beats all other moves but can only be used once per game.
 ## Installation
 1. Clone the repository:
     ```bash
