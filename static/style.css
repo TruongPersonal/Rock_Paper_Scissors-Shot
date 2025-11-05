@@ -112,9 +112,6 @@ body.light-mode #soundToggle {
 
 /* Sidebar */
 .sidebar {
-  margin-top: auto;
-  margin-bottom: auto;
-  border-radius: 0 24px 24px 0;
   width: 280px;
   background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-main) 100%);
   border-right: 1px solid var(--border);
@@ -123,7 +120,7 @@ body.light-mode #soundToggle {
   flex-direction: column;
   position: sticky;
   top: 0;
-  height: 90vh;
+  height: 100vh;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 1002;
 }
@@ -633,9 +630,12 @@ h1 {
   }
 
   .sidebar {
+    border-radius: 0 24px 24px 0;
+    height: 85vh;
     top: 50%;
     transform: translate(0, -50%);
     position: fixed;
+
     left: -100%;
     width: 280px;
     z-index: 1000;
@@ -644,18 +644,6 @@ h1 {
 
   .sidebar.sidebar-open {
     left: 0;
-  }
-
-  body.sidebar-active::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: var(--overlay);
-    z-index: 999;
-    animation: fadeIn 0.3s ease;
   }
 
   @keyframes fadeIn {
