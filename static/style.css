@@ -679,7 +679,7 @@ h1 {
     }
     
     .vs-badge {
-        order: 2;
+        text-align: center;
         font-size: 1.25rem;
         padding: 10px 20px;
     }
