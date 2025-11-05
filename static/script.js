@@ -1,9 +1,46 @@
-const sounds = {
-  click: new Audio("/static/sounds/click.mp3"),
-  win: new Audio("/static/sounds/win.mp3"),
-  lose: new Audio("/static/sounds/lose.mp3"),
-  tie: new Audio("/static/sounds/tie.mp3")
-};
+class AudioManager {
+  constructor(sounds) {
+    this.sounds = {};
+    this.enabled = true; // bật/tắt toàn bộ âm
+
+    for (const [key, src] of Object.entries(sounds)) {
+      const audio = new Audio(src);
+      audio.preload = "auto";
+      audio.volume = 0.8;
+      this.sounds[key] = audio;
+    }
+  }
+
+  play(name) {
+    if (!this.enabled || !this.sounds[name]) return;
+
+    const sound = this.sounds[name];
+    sound.currentTime = 0;
+    sound.pause(); // ngăn chồng âm
+    sound.play().catch(() => {});
+  }
+
+  mute() {
+    this.enabled = false;
+    for (const a of Object.values(this.sounds)) a.pause();
+  }
+
+  unmute() {
+    this.enabled = true;
+  }
+
+  toggle() {
+    this.enabled = !this.enabled;
+    if (!this.enabled) this.mute();
+  }
+}
+
+const sounds = new AudioManager({
+  click: "/static/sounds/click.mp3",
+  win: "/static/sounds/win.mp3",
+  lose: "/static/sounds/lose.mp3",
+  tie: "/static/sounds/tie.mp3",
+});
 
 const cards = document.querySelectorAll(".choice-card");
 const battleArena = document.getElementById("battleArena");
@@ -54,8 +91,7 @@ const themeIcon = themeToggle.querySelector(".theme-icon");
 let isDarkMode = true;
 
 themeToggle.addEventListener("click", () => {
-  sounds.click.currentTime = 0;
-  sounds.click.play().catch(() => { });
+  sounds.play("click");
   isDarkMode = !isDarkMode;
   document.body.classList.toggle("light-mode", !isDarkMode);
   themeIcon.textContent = isDarkMode ? "🌙" : "☀️";
@@ -75,8 +111,7 @@ function updateScores(scores) {
 
 resetScoresBtn.addEventListener("click", async () => {
   try {
-    sounds.click.currentTime = 0;
-    sounds.click.play().catch (() => { });
+    sounds.play("click");
     const res = await fetch("/reset-scores", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -91,7 +126,7 @@ resetScoresBtn.addEventListener("click", async () => {
 
 cards.forEach((card) => {
   card.addEventListener("click", async () => {
-    sounds.click.play();
+    sounds.play("click");
 
     const choice = card.getAttribute("data-choice");
     const emoji = choice.split(" ")[0];
@@ -133,9 +168,9 @@ cards.forEach((card) => {
       await new Promise((r) => setTimeout(r, 500));
 
       updateScores(data.scores);
-      if (data.status === "win") sounds.win.play();
-      else if (data.status === "lose") sounds.lose.play();
-      else sounds.tie.play();
+      if (data.status === "win") sounds.play("win");
+      else if (data.status === "lose") sounds.play("lose");
+      else sounds.play("tie");
 
       resultBadge.textContent = data.message;
       resultBadge.className = "result-badge " + data.status;
@@ -151,7 +186,7 @@ cards.forEach((card) => {
 });
 
 playAgainBtn.addEventListener("click", () => {
-  sounds.click.play();
+  sounds.play("click");
   battleArena.classList.add("hidden");
   resultDisplay.classList.add("hidden");
   playAgainBtn.classList.add("hidden");
@@ -161,4 +196,12 @@ playAgainBtn.addEventListener("click", () => {
   computerBattleChoice.classList.remove("revealed");
   playerBattleChoice.querySelector(".battle-emoji").textContent = "❓";
   computerBattleChoice.querySelector(".battle-emoji").textContent = "❓";
+});
+
+const soundToggle = document.getElementById("soundToggle");
+
+soundToggle.addEventListener("click", () => {
+  sounds.toggle();
+  sounds.play("click"); // click có âm feedback
+  soundToggle.textContent = sounds.enabled ? "🔊" : "🔇";
 });
