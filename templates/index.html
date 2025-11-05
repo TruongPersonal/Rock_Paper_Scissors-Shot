@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rock Paper Scissors Battle</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Toggle Sidebar Button -->
+      <button
+        id="toggleSidebar"
+        class="sidebar-toggle"
+        aria-label="Toggle Sidebar"
+      >
+        <span class="toggle-icon">📊</span>
+      </button>
+
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h2>📊 Score Board</h2>
+          <button
+            class="close-sidebar"
+            id="closeSidebar"
+            aria-label="Close Sidebar"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="score-cards">
+          <div class="score-card wins">
+            <div class="score-icon">🏆</div>
+            <div class="score-info">
+              <div class="score-label">Wins</div>
+              <div class="score-number" id="winsScore">{{ scores.wins }}</div>
+            </div>
+          </div>
+
+          <div class="score-card losses">
+            <div class="score-icon">💔</div>
+            <div class="score-info">
+              <div class="score-label">Losses</div>
+              <div class="score-number" id="lossesScore">
+                {{ scores.losses }}
+              </div>
+            </div>
+          </div>
+
+          <div class="score-card ties">
+            <div class="score-icon">🤝</div>
+            <div class="score-info">
+              <div class="score-label">Ties</div>
+              <div class="score-number" id="tiesScore">{{ scores.ties }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-footer">
+          <button id="resetScores" class="reset-btn">🔄 Reset Scores</button>
+          <div class="game-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total Games</span>
+              <span class="stat-value" id="totalGames">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Win Rate</span>
+              <span class="stat-value" id="winRate">0%</span>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="content-wrapper">
+          <!-- Header with theme toggle -->
+          <div class="header-section">
+            <h1>Rock Paper Scissors</h1>
+            <button
+              id="themeToggle"
+              class="theme-toggle"
+              aria-label="Toggle Theme"
+            >
+              <span class="theme-icon">🌙</span>
+            </button>
+          </div>
+
+          <!-- Battle Arena -->
+          <div id="battleArena" class="battle-arena hidden">
+            <div class="battle-player">
+              <div class="player-tag">YOU</div>
+              <div class="battle-circle" id="playerBattleChoice">
+                <div class="circle-inner">
+                  <span class="battle-emoji">❓</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="vs-badge">VS</div>
+
+            <div class="battle-player">
+              <div class="player-tag">A.I</div>
+              <div class="battle-circle" id="computerBattleChoice">
+                <div class="circle-inner">
+                  <span class="battle-emoji">❓</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Result Display -->
+          <div id="resultDisplay" class="result-box hidden">
+            <div class="result-badge" id="resultBadge"></div>
+            <div class="result-text">
+              <span id="playerResult"></span>
+              <span class="vs-small">vs</span>
+              <span id="computerResult"></span>
+            </div>
+          </div>
+
+          <!-- Choices Selection -->
+          <div id="choicesSection" class="choices-section">
+            <h2 class="section-title">Choose Your Weapon</h2>
+            <div class="choices-container">
+              {% for choice in choices %}
+              <div class="choice-card" data-choice="{{ choice }}">
+                <div class="card-inner">
+                  <div class="card-emoji">{{ choice.split(' ')[0] }}</div>
+                  <div class="card-name">{{ choice.split(' ')[1] }}</div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Play Again Button -->
+          <button id="playAgain" class="play-again-btn hidden">
+            <span>🔄</span> Play Again
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <script src="../static/script.js"></script>
+  </body>
+</html>
