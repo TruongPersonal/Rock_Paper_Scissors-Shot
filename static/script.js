@@ -63,11 +63,13 @@ const toggleSidebarBtn = document.getElementById("toggleSidebar");
 const closeSidebarBtn = document.getElementById("closeSidebar");
 
 toggleSidebarBtn.addEventListener("click", () => {
+  sounds.play("click");
   sidebar.classList.toggle("sidebar-open");
   document.body.classList.toggle("sidebar-active");
 });
 
 closeSidebarBtn.addEventListener("click", () => {
+  sounds.play("click");
   sidebar.classList.remove("sidebar-open");
   document.body.classList.remove("sidebar-active");
 });
